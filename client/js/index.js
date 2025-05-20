@@ -50,7 +50,7 @@ function createCardDivElement(obj) {
   const ele = document.createElement("div");
   ele.innerHTML = obj.letter;
   ele.classList = obj.classList;
-  ele.id = obj.id;
+  ele.id = obj.glassId;
   container.appendChild(ele);
   ele.style.top = obj.cardLastPositionY + 'px';
   ele.addEventListener('mousedown', mouseDown);
@@ -260,51 +260,17 @@ sock.on('renderGlassAndInsides', (ELEMENT_LIST) => {
 
   
 });
-sock.on('renderGlassAndInsides2', (ELEMENT_LIST) => {
 
-  ELEMENT_LIST.forEach(element => {
-    
-    // if (document.getElementById(element.id) != null) { return };
-    var nodeExist = false;
-
-    if (document.getElementById(element.glassId) == null) {
-      createGlassDiv(element); 
-      appendInsideToGlass(element);
-      const domGlass = document.getElementById(element.glassId);
-      domGlass.style.top = '120px';
-      domGlass.style.left = '120px';
-    } else if(document.getElementById(element.glassId) != null) {
-      const glassDiv = document.getElementById(element.glassId);
-      const nodesArr = Array.prototype.slice.call(glassDiv.getElementsByTagName("*"),0);
-      nodesArr.forEach(item => {
-        if (item.innerHTML == element.letter) {
-          nodeExist = true;
-        };
-      });
-      if (nodeExist == false) {
-        appendInsideToGlass(element);
-      };
-      
-    };
-    
-    // domGlass.style.top = (card.cardLastPositionY) + 'px';
-    // domGlass.style.left = (card.cardLastPositionX) + 'px';
-  });
-
-  
-  
-
-  
-});
 
 
 
 sock.on('updateAllClientsWhenRefreshed', (data) => {
 
   data.forEach(card => {
-    if (document.getElementById(element.glassId) != null) { return };
-    createGlassDiv(card);
-    appendInsideToGlass(card);
+    if (document.getElementById(card.glassId) != null) { return };
+    createCardDivElement(card);
+    // createGlassDiv(card);
+    // appendInsideToGlass(card);
     const domCard = document.getElementById(card.glassId);
     domCard.style.top = (card.cardLastPositionY) + 'px';
     domCard.style.left = (card.cardLastPositionX) + 'px';

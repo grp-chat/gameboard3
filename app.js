@@ -24,7 +24,6 @@ const CHARACTER_SET = require('./character_set');
 const TAG_SET = require('./tag_set');
 
 
-let isTeacher = false;
 
 function shuffle(array) {
     let currentIndex = array.length;
@@ -42,12 +41,10 @@ function shuffle(array) {
     }
 }
 
+shuffle(CHARACTER_SET);
+
 
 let TAG_SET2 = [];
-
-
-
-
 
 
 const packSize = 8;
@@ -58,23 +55,21 @@ let tag_SetIndex = 0;
 let charactersRemaining2 = CHARACTER_SET.length - charecter_setIndex;
 
 
-
-
-
 let newX = 0, newY = 0, startX = 0, startY = 0, divId = 0;
 
 let ELEMENT_LIST = [];
-let charactersRemaining = TAG_SET.length - ELEMENT_LIST.length;
+// let charactersRemaining = TAG_SET.length - ELEMENT_LIST.length;
+let charactersRemaining = CHARACTER_SET.length - ELEMENT_LIST.length;
 
 
 fs.readFile('savegame.txt', function (err, data) {
     if (err) throw err;
     ELEMENT_LIST = JSON.parse(data);
 });
-fs.readFile('shuffled.txt', function (err, data) {
-    if (err) throw err;
-    TAG_SET2 = JSON.parse(data);
-});
+// fs.readFile('shuffled.txt', function (err, data) {
+//     if (err) throw err;
+//     TAG_SET2 = JSON.parse(data);
+// });
 
 
 
@@ -91,7 +86,7 @@ class Card {
         this.classList = "card";
         this.cardLastPositionX = position;
         this.cardLastPositionY = 60;
-        this.id = runningNumber;
+        this.glassId = runningNumber;
         position += 60;
         runningNumber++;
         ELEMENT_LIST.push(this);
@@ -164,23 +159,10 @@ function freshPack2() {
     });
     
 }
-function freshPack3() {
 
-    position = 60;
-    TAG_SET.forEach(tag => {
-        glassRunningNumber++;
-        
-
-        const PACK = tag;
-        return PACK.map(alphabets => {
-            const card = new Inside(alphabets);
-            return card;
-        });
-    });
-}
 
 class Pack {
-    constructor(cards = freshPack2()) {
+    constructor(cards = freshPack()) {
         this.cards = cards;
     };
 }
@@ -189,11 +171,14 @@ class Pack {
 io.sockets.on('connection', (sock) => {
 
     
-    charactersRemaining = TAG_SET.length - ELEMENT_LIST.length;
-    glassRunningNumber = ELEMENT_LIST.length;
-    tag_SetIndex = ELEMENT_LIST.length;
-    // io.emit('updateAllClientsWhenRefreshed', ELEMENT_LIST);
-    io.emit('renderGlassAndInsides', ELEMENT_LIST);
+    // charactersRemaining = TAG_SET.length - ELEMENT_LIST.length;
+    charactersRemaining = CHARACTER_SET.length - ELEMENT_LIST.length;
+    // glassRunningNumber = ELEMENT_LIST.length;
+    runningNumber = ELEMENT_LIST.length;
+    charecter_setIndex = ELEMENT_LIST.length;
+    // tag_SetIndex = ELEMENT_LIST.length;
+    io.emit('updateAllClientsWhenRefreshed', ELEMENT_LIST);
+    // io.emit('renderGlassAndInsides', ELEMENT_LIST);
     io.emit('updateButton', charactersRemaining);
 
     sock.on('checkUser', (data) => {
@@ -230,12 +215,6 @@ io.sockets.on('connection', (sock) => {
             }
         });
 
-        // fs.writeFile('setIndex.txt', setIndex, err => {
-        //     if (err) {
-        //         console.err;
-        //         return;
-        //     }
-        // });
         const saveGame = JSON.stringify(ELEMENT_LIST);
         fs.writeFile('savegame.txt', saveGame, err => {
             if (err) {
@@ -244,20 +223,18 @@ io.sockets.on('connection', (sock) => {
             }
         });
 
-
-        
-
         
     });
 
     sock.on('createNewCards', () => {
 
         const pack = new Pack();
-        // io.emit('updateAllClientsWhenRefreshed', ELEMENT_LIST);
-        io.emit('renderGlassAndInsides', ELEMENT_LIST);
+        io.emit('updateAllClientsWhenRefreshed', ELEMENT_LIST);
+        // io.emit('renderGlassAndInsides', ELEMENT_LIST);
 
 
-        charactersRemaining = TAG_SET.length - ELEMENT_LIST.length;
+        charactersRemaining = CHARACTER_SET.length - ELEMENT_LIST.length;
+        // charactersRemaining = TAG_SET.length - ELEMENT_LIST.length;
         
         io.emit('updateButton', charactersRemaining);
     });
