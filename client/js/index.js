@@ -18,15 +18,27 @@ var isAndroid = ua.indexOf("android") > -1;
 const container = document.getElementById("container");
 
 const button = document.getElementById("add");
-const restart = document.getElementById("restart");
+const restart = document.getElementById("restart"); 
+const create = document.getElementById("create"); 
 
 if (isAndroid) { document.body.style.touchAction = "none" };
 
+create.addEventListener('click', () =>{
+  if (loginName == "teacher") {
+    const input = prompt("Create a glass tag:");
+if (input != null && input.length !== 0) {
+   // do your stuff here
+   alert("Tag created.");
+   sock.emit('createManualGlassTag', input);
+   
+}
+  }
+});
 restart.addEventListener('click', () =>{
   if (loginName == "teacher") {
     if (confirm('Confirm restart?')) {
       // Save it!
-      sock.emit('clearAndShuffle');
+      // sock.emit('clearAndShuffle');
     } else {
       // Do nothing!
       alert("Action cancelled.")

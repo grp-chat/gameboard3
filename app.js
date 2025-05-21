@@ -278,6 +278,13 @@ io.sockets.on('connection', (sock) => {
 
     });
 
+    sock.on('createManualGlassTag', input => {
+        const upperCase = input.toUpperCase();
+        const tag = [...upperCase];
+        const newTag = new Tag(tag);
+        io.emit('renderGlassAndInsides', ELEMENT_LIST);
+    });
+
     // sock.on("test", data => { console.log(data) });
 
 
