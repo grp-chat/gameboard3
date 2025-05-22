@@ -24,34 +24,3 @@ const W = Array(11).fill("W");
 const X = Array(5).fill("X");
 const Y = Array(6).fill("Y");
 const Z = Array(9).fill("Z");
-
-const CHARACTER_SET = [
-    ...A,
-    ...B,
-    ...C,
-    ...D,
-    ...E,
-    ...F,
-    ...G,
-    ...H,
-    ...I,
-    ...J,
-    ...K,
-    ...L,
-    ...M,
-    ...N,
-    ...O,
-    ...P,
-    ...Q,
-    ...R,
-    ...S,
-    ...T,
-    ...U,
-    ...V,
-    ...W,
-    ...X,
-    ...Y,
-    ...Z
-];
-
-module.exports = CHARACTER_SET;

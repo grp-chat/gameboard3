@@ -47,7 +47,7 @@ shuffle(CHARACTER_SET);
 let TAG_SET2 = [];
 
 
-const packSize = 8;
+const packSize = 15;
 
 let charecter_setIndex = 0;
 let tag_SetIndex = 0;
